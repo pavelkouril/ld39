@@ -7,6 +7,8 @@ public class PlayerControls : MonoBehaviour
 {
     public Player.Superpowers? SuperpowerToCast;
 
+    public LayerMask layerMask;
+
     private float yHeight;
     private Player player;
 
@@ -24,31 +26,36 @@ public class PlayerControls : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && Physics.Raycast(ray, out hit, 300, layerMask))
         {
+            Debug.Log("hit");
             var tempTarget = hit.point;
             tempTarget.y = yHeight;
 
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && hit.transform.CompareTag("Ground"))
+            if (Input.GetMouseButtonDown(1) && hit.transform.CompareTag("Ground"))
             {
+                player.CancelBurningVision();
                 transform.LookAt(tempTarget);
                 player.SetMoveTarget(tempTarget);
             }
 
-            if (Input.GetMouseButton(1) && SuperpowerToCast == Player.Superpowers.Teleport && hit.transform.CompareTag("Ground"))
+            if (Input.GetMouseButtonDown(0) && SuperpowerToCast == Player.Superpowers.Teleport && hit.transform.CompareTag("Ground"))
             {
+                player.CancelBurningVision();
                 player.Stop();
                 player.Teleport(tempTarget);
+                SuperpowerToCast = null;
             }
 
-            if (Input.GetMouseButton(1) && SuperpowerToCast == Player.Superpowers.Fireball && hit.transform.CompareTag("Enemy"))
+            if (Input.GetMouseButtonDown(0) && SuperpowerToCast == Player.Superpowers.Fireball && hit.transform.CompareTag("Enemy"))
             {
                 player.Stop();
                 transform.LookAt(tempTarget);
                 player.CastFireball(hit.transform);
+                SuperpowerToCast = null;
             }
 
-            if (Input.GetMouseButton(1) && SuperpowerToCast == Player.Superpowers.BurningVision)
+            if (Input.GetMouseButton(0) && SuperpowerToCast == Player.Superpowers.BurningVision)
             {
                 player.Stop();
                 transform.LookAt(tempTarget);
@@ -57,6 +64,7 @@ public class PlayerControls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            player.CancelBurningVision();
             SuperpowerToCast = Player.Superpowers.Fireball;
         }
 
@@ -68,11 +76,13 @@ public class PlayerControls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            player.CancelBurningVision();
             SuperpowerToCast = Player.Superpowers.Teleport;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
+            player.CancelBurningVision();
             player.CastRingOfFire();
         }
 

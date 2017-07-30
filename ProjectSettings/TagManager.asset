@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Ground
+  - Recharge
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - 
   - Navigatable
   - Enemy
-  - 
-  - 
+  - RingOfFire
+  - Recharge
   - 
   - 
   - 

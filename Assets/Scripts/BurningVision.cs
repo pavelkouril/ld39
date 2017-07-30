@@ -22,6 +22,10 @@ public class BurningVision : MonoBehaviour
         if (Physics.Raycast(ray, out hit, MaxLength))
         {
             lineRenderer.SetPosition(1, hit.point);
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                hit.collider.GetComponent<Enemy>().Health -= Time.deltaTime * 2;
+            }
         }
         else
         {
