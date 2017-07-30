@@ -128,14 +128,6 @@ public class Player : MonoBehaviour
         RightEyeBurningVision.gameObject.SetActive(false);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            Health -= 2 * Time.deltaTime;
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Recharge"))

@@ -35,7 +35,7 @@ public class RingOfFire : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy>().Health -= 1;
+            other.GetComponent<Enemy>().TakeDamage(1);
             Vector3 dir = (other.transform.position - transform.position).normalized;
             other.transform.position = transform.position + (dir * (collider.radius + 1));
         }

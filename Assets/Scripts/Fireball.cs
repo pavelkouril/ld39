@@ -25,7 +25,7 @@ public class Fireball : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy>().Health -= Damage;
+            other.GetComponent<Enemy>().TakeDamage(Damage);
             Destroy(this.gameObject);
         }
     }

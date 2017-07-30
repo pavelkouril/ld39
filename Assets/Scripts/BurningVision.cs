@@ -25,7 +25,7 @@ public class BurningVision : MonoBehaviour
             lineRenderer.SetPosition(1, hit.point);
             if (hit.collider.CompareTag("Enemy"))
             {
-                hit.collider.GetComponent<Enemy>().Health -= Time.deltaTime * DamagePerSecond;
+                hit.collider.GetComponent<Enemy>().TakeDamage(Time.deltaTime * DamagePerSecond);
             }
         }
         else

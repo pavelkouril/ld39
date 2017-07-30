@@ -14,9 +14,15 @@ public class Enemy : MonoBehaviour
 
     public Animator animator;
 
+    public float Damage;
+
     private EnemyFollowPlayer playerFollower;
 
     private Player player;
+    private float attacTimestamp;
+    private float attacLength = 3f;
+
+    private float hitTimestamp;
 
     private void Awake()
     {
@@ -37,17 +43,90 @@ public class Enemy : MonoBehaviour
             Destroy(go, 5f);
             Destroy(this.gameObject);
         }
+        if (animator.GetBool("Hit") && hitTimestamp + 1.5f < Time.time)
+        {
+            animator.SetBool("Hit", false);
+            WalkAnimation();
+        }
     }
 
-    internal void IdleAnimation()
+    public void IdleAnimation()
     {
         animator.SetBool("Walk", false);
+        animator.SetBool("Hit", false);
+        animator.SetBool("Attack", false);
         animator.SetBool("Idle", true);
+    }
+
+    public void AttackAnimation()
+    {
+        animator.SetBool("Walk", false);
+        animator.SetBool("Hit", false);
+        animator.SetBool("Attack", true);
+        animator.SetBool("Idle", false);
+    }
+
+    public void HitAnimation()
+    {
+        hitTimestamp = Time.time;
+        animator.SetBool("Walk", false);
+        animator.SetBool("Hit", true);
+        animator.SetBool("Attack", false);
+        animator.SetBool("Idle", false);
+    }
+
+    public void WalkAnimation()
+    {
+        animator.SetBool("Walk", true);
+        animator.SetBool("Attack", false);
+        animator.SetBool("Idle", false);
     }
 
     public void FollowPlayer(Player p)
     {
         player = p;
         playerFollower.Player = p;
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        Health -= dmg;
+        if (!animator.GetBool("Hit"))
+        {
+            HitAnimation();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (attacTimestamp + attacLength <= Time.time && !animator.GetBool("Hit"))
+            {
+                attacTimestamp = Time.time;
+                AttackAnimation();
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && !animator.GetBool("Hit"))
+        {
+            if (attacTimestamp + attacLength <= Time.time)
+            {
+                other.GetComponent<Player>().Health -= Damage;
+                attacTimestamp = Time.time;
+                AttackAnimation();
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            WalkAnimation();
+        }
     }
 }

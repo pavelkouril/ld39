@@ -920,6 +920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   animator: {fileID: 95815020265176114}
+  Damage: 10
 --- !u!136 &136538093308123298
 CapsuleCollider:
   m_ObjectHideFlags: 1
