@@ -234,11 +234,6 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag("RechargeTutorial") && other != null)
         {
-            FireballChargesLeft = 4;
-            BurningVisionChargesLeft = 1;
-            TeleportChargesLeft = 1;
-            RingOfFireChargesLeft = 1;
-            timeStampRingOfFireCast = 0;
             Destroy(other.gameObject);
             tutManager.StartGame();
         }

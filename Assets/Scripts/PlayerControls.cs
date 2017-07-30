@@ -36,7 +36,7 @@ public class PlayerControls : MonoBehaviour
             var tempTarget = hit.point;
             tempTarget.y = yHeight;
 
-            if (Input.GetMouseButtonDown(1) && hit.transform.CompareTag("Ground"))
+            if (Input.GetMouseButtonDown(1))
             {
                 player.CancelBurningVision();
                 transform.LookAt(tempTarget);

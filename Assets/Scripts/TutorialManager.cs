@@ -20,6 +20,8 @@ public class TutorialManager : MonoBehaviour
 
     public Recharge rechargePrefab;
 
+    public GameObject CreditsText;
+
     public int State = 0;
 
     private void Start()
@@ -29,7 +31,7 @@ public class TutorialManager : MonoBehaviour
         player.TeleportChargesLeft = 0;
         player.RingOfFireChargesLeft = 0;
 
-        textField.text = "Hello. Move around by clicking with RMB.";
+        textField.text = "Move around by clicking with RMB. Or skip tutorial with Return key.";
         TutorialCanvas.SetActive(true);
     }
 
@@ -43,6 +45,12 @@ public class TutorialManager : MonoBehaviour
         {
             textField.text = "Great! Try teleporting around. Press E and select place to teleport with LMB.";
             State = 1;
+            CreditsText.SetActive(false);
+        }
+
+        if (State == 0 && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartGame();
         }
 
         if (State == 1 && player.timeStampTeleportCast > 0 && Input.GetMouseButton(0) && Physics.Raycast(ray, out hit, 300))
@@ -129,5 +137,12 @@ public class TutorialManager : MonoBehaviour
         TutorialCanvas.SetActive(false);
         GetComponent<EnemySpawner>().enabled = true;
         GetComponent<RechargeSpawner>().enabled = true;
+
+        player.FireballChargesLeft = 4;
+        player.BurningVisionChargesLeft = 1;
+        player.TeleportChargesLeft = 1;
+        player.RingOfFireChargesLeft = 1;
+        player.timeStampRingOfFireCast = 0;
+        player.Health = 100;
     }
 }

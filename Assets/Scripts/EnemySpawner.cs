@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (!player.IsDead)
         {
-            if (AliveZombies < 100)
+            if (AliveZombies < 125)
             {
                 waveCount++;
 
@@ -47,9 +47,9 @@ public class EnemySpawner : MonoBehaviour
                     enemy.EnemyKilled += killManager.Enemy_EnemyKilled;
                 }
 
-                if (waveCount % 10 == 0)
+                if (waveCount % 7 == 0)
                 {
-                    WaveInterval = Mathf.Max(WaveInterval - 1, 4);
+                    WaveInterval = Mathf.Max(WaveInterval - 1, 3);
                 }
             }
             yield return new WaitForSeconds(WaveInterval);
