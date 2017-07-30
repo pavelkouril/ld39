@@ -27,6 +27,10 @@ public class UIManager : MonoBehaviour
 
     public Text Killcount;
 
+    public GameObject DeathText;
+
+    public GameObject BottomPanel;
+
     private KillManager killManager;
 
     private void Awake()
@@ -49,5 +53,11 @@ public class UIManager : MonoBehaviour
         SliderBurningVisionCooldown.value = Mathf.Clamp01((Time.time - Player.timeStampBurningVisionCast) / Player.BurningVisionCooldown);
         SliderTeleportCooldown.value = Mathf.Clamp01((Time.time - Player.timeStampTeleportCast) / Player.TeleportCooldown);
         SliderRingOfFireCooldown.value = Mathf.Clamp01((Time.time - Player.timeStampRingOfFireCast) / Player.RingOfFireCooldown);
+
+        if (Player.IsDead)
+        {
+            DeathText.SetActive(true);
+            BottomPanel.SetActive(false);
+        }
     }
 }
