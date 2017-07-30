@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
 
     public float Speed = 5;
 
+    public ParticleSystem TeleportParticles;
+
     private Vector3? target;
     private float hitTimestamp;
     private bool shouldBurningVisionBeActive;
@@ -169,6 +171,7 @@ public class Player : MonoBehaviour
             TeleportChargesLeft--;
             timeStampTeleportCast = Time.time;
             teleportTarget = tempTarget;
+            TeleportParticles.Play();
 
             animator.SetBool("Teleport", true);
         }
