@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
         BurningVision,
     }
 
+    public TutorialManager tutManager;
+
     public float Health;
 
     public Transform SpellSpawn;
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour
     {
         if (IsDead)
         {
+            animator.applyRootMotion = true;
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("dying_backwards"))
             {
                 animator.SetBool("Die", false);
@@ -227,6 +230,17 @@ public class Player : MonoBehaviour
                 other.GetComponent<Recharge>().IsUsed = true;
                 Destroy(other.gameObject);
             }
+        }
+
+        if (other.CompareTag("RechargeTutorial") && other != null)
+        {
+            FireballChargesLeft = 4;
+            BurningVisionChargesLeft = 1;
+            TeleportChargesLeft = 1;
+            RingOfFireChargesLeft = 1;
+            timeStampRingOfFireCast = 0;
+            Destroy(other.gameObject);
+            tutManager.StartGame();
         }
     }
 }
