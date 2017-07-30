@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
     private Player player;
     private float attacTimestamp;
-    private float attacLength = 3f;
+    private float attacLength = 2.32f;
 
     private float hitTimestamp;
 

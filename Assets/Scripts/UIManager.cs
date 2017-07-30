@@ -42,9 +42,18 @@ public class UIManager : MonoBehaviour
 
     public GameObject TeleportSelection;
 
+    public Texture2D StandardCursor;
+
+    public Texture2D SelectCursor;
+
     private void Awake()
     {
         killManager = GetComponent<KillManager>();
+    }
+
+    void Start()
+    {
+        Cursor.SetCursor(StandardCursor, Vector3.zero, CursorMode.Auto);
     }
 
     void Update()
@@ -82,5 +91,14 @@ public class UIManager : MonoBehaviour
         FireballSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.Fireball);
         BurningVisionSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.BurningVision);
         TeleportSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.Teleport);
+
+        if (Player.playerControls.SuperpowerToCast != null)
+        {
+            Cursor.SetCursor(SelectCursor, Vector3.zero, CursorMode.Auto);
+        }
+        else
+        {
+            Cursor.SetCursor(StandardCursor, Vector3.zero, CursorMode.Auto);
+        }
     }
 }

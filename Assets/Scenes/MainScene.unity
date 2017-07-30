@@ -1519,6 +1519,8 @@ MonoBehaviour:
   FireballSelection: {fileID: 1717103284}
   BurningVisionSelection: {fileID: 1911121365}
   TeleportSelection: {fileID: 497836401}
+  StandardCursor: {fileID: 2800000, guid: c172de2b0755b904394176df7a31d78b, type: 3}
+  SelectCursor: {fileID: 2800000, guid: 7e6999bd28c9ffb49a40c458b0219c21, type: 3}
 --- !u!114 &488397493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1914,7 +1916,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 870419845
+  randomSeed: 1368486
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6574,6 +6576,7 @@ GameObject:
   - component: {fileID: 1000292611}
   - component: {fileID: 1000292612}
   - component: {fileID: 1000292613}
+  - component: {fileID: 1000292614}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -6697,6 +6700,17 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &1000292614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1000292606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0ce3276c95a4f4399ef930d0eec7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1011489417
 GameObject:
   m_ObjectHideFlags: 0

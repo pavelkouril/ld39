@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class Player : MonoBehaviour
 {
@@ -182,6 +184,23 @@ public class Player : MonoBehaviour
         Health -= damage;
         animator.SetBool("Hit", true);
         hitTimestamp = Time.time;
+
+        var chromatic = ScriptableObject.CreateInstance<ChromaticAberration>();
+        chromatic.enabled.Override(true);
+        chromatic.intensity.Override(0.25f);
+
+        var volume = PostProcessManager.instance.QuickVolume(12, 100f, chromatic);
+        volume.weight = 0f;
+
+        DOTween.Sequence()
+            .Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 0.05f))
+            .AppendInterval(0.2f)
+            .Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 0.05f))
+            .OnComplete(() =>
+            {
+                RuntimeUtilities.DestroyVolume(volume, true);
+                Destroy(this);
+            });
     }
 
     public void SetMoveTarget(Vector3 newTarget)

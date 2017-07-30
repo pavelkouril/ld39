@@ -66,19 +66,19 @@ public class PlayerControls : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && player.FireballChargesLeft > 0)
         {
             player.CancelBurningVision();
             SuperpowerToCast = Player.Superpowers.Fireball;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && player.BurningVisionChargesLeft > 0)
         {
             SuperpowerToCast = Player.Superpowers.BurningVision;
             player.CastBurningVision();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && player.TeleportChargesLeft > 0)
         {
             player.CancelBurningVision();
             SuperpowerToCast = Player.Superpowers.Teleport;
