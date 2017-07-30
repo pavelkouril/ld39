@@ -141,7 +141,7 @@ public class TutorialManager : MonoBehaviour
         GetComponent<EnemySpawner>().enabled = true;
         GetComponent<RechargeSpawner>().enabled = true;
 
-        player.FireballChargesLeft = 4;
+        player.FireballChargesLeft = 3;
         player.BurningVisionChargesLeft = 1;
         player.TeleportChargesLeft = 1;
         player.RingOfFireChargesLeft = 1;

@@ -12799,6 +12799,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxLength: 20
   DamagePerSecond: 7
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294965247
 --- !u!1001 &652638239
 Prefab:
   m_ObjectHideFlags: 0
@@ -13394,6 +13397,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxLength: 20
   DamagePerSecond: 7
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294965247
 --- !u!1 &800131378
 GameObject:
   m_ObjectHideFlags: 0

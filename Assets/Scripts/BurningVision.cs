@@ -7,6 +7,8 @@ public class BurningVision : MonoBehaviour
     public float MaxLength = 5;
     public float DamagePerSecond = 5;
 
+    public LayerMask layerMask;
+
     private LineRenderer lineRenderer;
 
     private void Awake()
@@ -20,7 +22,7 @@ public class BurningVision : MonoBehaviour
 
         Ray ray = new Ray(transform.position, -transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, MaxLength))
+        if (Physics.Raycast(ray, out hit, MaxLength, layerMask))
         {
             lineRenderer.SetPosition(1, hit.point);
             if (hit.collider.CompareTag("Enemy"))

@@ -278,7 +278,7 @@ public class Player : MonoBehaviour
                 switch (rand)
                 {
                     case 0:
-                        FireballChargesLeft += 4;
+                        FireballChargesLeft += 3;
                         break;
                     case 1:
                         BurningVisionChargesLeft += 1;
