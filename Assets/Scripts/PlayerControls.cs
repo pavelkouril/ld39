@@ -52,11 +52,11 @@ public class PlayerControls : MonoBehaviour
                 SuperpowerToCast = null;
             }
 
-            if (Input.GetMouseButtonDown(0) && SuperpowerToCast == Player.Superpowers.Fireball && hit.transform.CompareTag("Enemy"))
+            if (Input.GetMouseButtonDown(0) && SuperpowerToCast == Player.Superpowers.Fireball)
             {
                 player.Stop();
                 transform.LookAt(tempTarget);
-                player.CastFireball(hit.transform);
+                player.CastFireball(hit.point);
                 SuperpowerToCast = null;
             }
 

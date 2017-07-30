@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         target = null;
     }
 
-    public void CastFireball(Transform t)
+    public void CastFireball(Vector3 target)
     {
         if (FireballChargesLeft > 0 && timeStampFireballCast + FireballCooldown < Time.time)
         {
@@ -90,7 +90,8 @@ public class Player : MonoBehaviour
             timeStampFireballCast = Time.time;
 
             var fireball = Instantiate(Fireball, SpellSpawn.position, Quaternion.identity);
-            fireball.Target = t;
+            target.y = SpellSpawn.position.y;
+            fireball.Target = target;
         }
     }
 
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Recharge"))
+        if (other.CompareTag("Recharge") && other != null)
         {
             var rand = UnityEngine.Random.Range(0, 4);
             switch (rand)
