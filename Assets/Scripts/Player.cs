@@ -59,6 +59,13 @@ public class Player : MonoBehaviour
 
     public bool ShouldBlockMovement { get { return teleportTarget != null || shouldCastRingOfFire; } }
 
+    public PlayerControls playerControls { get; private set; }
+
+    private void Awake()
+    {
+        playerControls = GetComponent<PlayerControls>();
+    }
+
     void Update()
     {
         if (IsDead)
@@ -203,6 +210,7 @@ public class Player : MonoBehaviour
         LeftEyeBurningVision.gameObject.SetActive(false);
         RightEyeBurningVision.gameObject.SetActive(false);
         shouldBurningVisionBeActive = false;
+        playerControls.SuperpowerToCast = null;
     }
 
     private void OnTriggerEnter(Collider other)

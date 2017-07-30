@@ -22,6 +22,8 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject CreditsText;
 
+    public GameObject QuitCanvas;
+
     public int State = 0;
 
     private void Start()
@@ -135,6 +137,7 @@ public class TutorialManager : MonoBehaviour
     {
         this.enabled = false;
         TutorialCanvas.SetActive(false);
+        QuitCanvas.SetActive(false);
         GetComponent<EnemySpawner>().enabled = true;
         GetComponent<RechargeSpawner>().enabled = true;
 
@@ -142,7 +145,7 @@ public class TutorialManager : MonoBehaviour
         player.BurningVisionChargesLeft = 1;
         player.TeleportChargesLeft = 1;
         player.RingOfFireChargesLeft = 1;
-        player.timeStampRingOfFireCast = 0;
+        player.timeStampRingOfFireCast = -11;
         player.Health = 100;
     }
 }

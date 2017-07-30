@@ -34,6 +34,14 @@ public class UIManager : MonoBehaviour
 
     private KillManager killManager;
 
+    public Image HealthbarFill;
+
+    public GameObject FireballSelection;
+
+    public GameObject BurningVisionSelection;
+
+    public GameObject TeleportSelection;
+
     private void Awake()
     {
         killManager = GetComponent<KillManager>();
@@ -65,5 +73,14 @@ public class UIManager : MonoBehaviour
                 SceneManager.LoadScene("MainScene");
             }
         }
+
+        if (Player.Health <= 30)
+        {
+            HealthbarFill.color = new Color(1, 0, 0, 0.216f);
+        }
+
+        FireballSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.Fireball);
+        BurningVisionSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.BurningVision);
+        TeleportSelection.SetActive(Player.playerControls.SuperpowerToCast == Player.Superpowers.Teleport);
     }
 }
