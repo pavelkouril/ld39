@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     public float TeleportCooldown;
     public float RingOfFireCooldown;
 
+    public float BurningVisionDuration;
+
     internal float timeStampFireballCast = -11;
     internal float timeStampBurningVisionCast = -11;
     internal float timeStampTeleportCast = -11;
@@ -50,6 +52,11 @@ public class Player : MonoBehaviour
         if (IsDead)
         {
             Debug.Log("you died!");
+        }
+
+        if (timeStampBurningVisionCast + BurningVisionDuration <= Time.time)
+        {
+            CancelBurningVision();
         }
 
         if (target != null && target != transform.position)
@@ -140,7 +147,7 @@ public class Player : MonoBehaviour
                     FireballChargesLeft += 4;
                     break;
                 case 1:
-                    BurningVisionChargesLeft += 2;
+                    BurningVisionChargesLeft += 1;
                     break;
                 case 2:
                     TeleportChargesLeft += 1;

@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemies()
     {
-        while (true)
+        while (!player.IsDead)
         {
             if (AliveZombies < 100)
             {

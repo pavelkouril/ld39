@@ -5,6 +5,7 @@ using UnityEngine;
 public class BurningVision : MonoBehaviour
 {
     public float MaxLength = 5;
+    public float DamagePerSecond = 5;
 
     private LineRenderer lineRenderer;
 
@@ -24,7 +25,7 @@ public class BurningVision : MonoBehaviour
             lineRenderer.SetPosition(1, hit.point);
             if (hit.collider.CompareTag("Enemy"))
             {
-                hit.collider.GetComponent<Enemy>().Health -= Time.deltaTime * 2;
+                hit.collider.GetComponent<Enemy>().Health -= Time.deltaTime * DamagePerSecond;
             }
         }
         else
