@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour
         {
             if (attacTimestamp + attacLength <= Time.time)
             {
-                other.GetComponent<Player>().Health -= Damage;
+                other.GetComponent<Player>().TakeDamage(Damage);
                 attacTimestamp = Time.time;
                 AttackAnimation();
             }

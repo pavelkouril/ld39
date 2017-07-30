@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4140794169399564}
   - component: {fileID: 135290819146422528}
   - component: {fileID: 54731347903062624}
+  - component: {fileID: 114608685565706052}
   m_Layer: 11
   m_Name: Recharge
   m_TagString: Recharge
@@ -247,6 +248,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce1d7da9216601428de50e59e4cdf71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114608685565706052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1411328372862530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d12f62badb88641856090825ba61e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsUsed: 0
 --- !u!135 &135290819146422528
 SphereCollider:
   m_ObjectHideFlags: 1

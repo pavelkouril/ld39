@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public BurningVision LeftEyeBurningVision;
     public BurningVision RightEyeBurningVision;
 
+    public Animator animator;
+
     public int FireballChargesLeft;
     public int BurningVisionChargesLeft;
     public int TeleportChargesLeft;
@@ -44,25 +46,80 @@ public class Player : MonoBehaviour
     public float Speed = 5;
 
     private Vector3? target;
+    private float hitTimestamp;
+    private bool shouldBurningVisionBeActive;
+    private bool shouldTeleport;
+    private Vector3? teleportTarget;
+    private bool shouldCastRingOfFire;
+    private Vector3? fireballTarget;
 
     public bool IsDead { get { return Health <= 0; } }
+
+    public bool ShouldBlockMovement { get { return teleportTarget != null || shouldCastRingOfFire; } }
 
     void Update()
     {
         if (IsDead)
         {
-            Debug.Log("you died!");
-        }
-
-        if (timeStampBurningVisionCast + BurningVisionDuration <= Time.time)
-        {
-            CancelBurningVision();
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("dying_backwards"))
+            {
+                animator.SetBool("Die", false);
+            }
+            else
+            {
+                animator.SetBool("Die", true);
+            }
         }
 
         if (target != null && target != transform.position)
         {
-            //transform.LookAt((Vector3)target);
+            animator.SetBool("Run", true);
             transform.position = Vector3.MoveTowards(transform.position, (Vector3)target, Time.deltaTime * Speed);
+        }
+        else
+        {
+            animator.SetBool("Run", false);
+        }
+
+        if (shouldBurningVisionBeActive && timeStampBurningVisionCast + 2 < Time.time)
+        {
+            ActivateBurningVision();
+        }
+
+        if (shouldBurningVisionBeActive && timeStampBurningVisionCast + BurningVisionDuration + 1 <= Time.time)
+        {
+            CancelBurningVision();
+        }
+
+        if (hitTimestamp + 1 < Time.time)
+        {
+            animator.SetBool("Hit", false);
+        }
+
+        if (fireballTarget != null && timeStampFireballCast + 0.75f <= Time.time)
+        {
+            var fireball = Instantiate(Fireball, SpellSpawn.position, Quaternion.identity);
+            fireball.Target = (Vector3)fireballTarget;
+            fireballTarget = null;
+        }
+
+        if (timeStampFireballCast + FireballCooldown <= Time.time)
+        {
+            animator.SetBool("Fireball", false);
+        }
+
+        if (teleportTarget != null && timeStampTeleportCast + 0.75f <= Time.time)
+        {
+            transform.position = (Vector3)teleportTarget;
+            teleportTarget = null;
+            animator.SetBool("Teleport", false);
+        }
+
+        if (shouldCastRingOfFire && timeStampRingOfFireCast + 0.75f <= Time.time)
+        {
+            Instantiate(RingOfFire, transform.position, Quaternion.identity);
+            shouldCastRingOfFire = false;
+            animator.SetBool("RingOfFire", false);
         }
     }
 
@@ -72,8 +129,9 @@ public class Player : MonoBehaviour
         {
             RingOfFireChargesLeft--;
             timeStampRingOfFireCast = Time.time;
-
-            var rof = Instantiate(RingOfFire, transform.position, Quaternion.identity);
+            shouldCastRingOfFire = true;
+            animator.SetBool("RingOfFire", true);
+            target = null;
         }
     }
 
@@ -88,10 +146,9 @@ public class Player : MonoBehaviour
         {
             FireballChargesLeft--;
             timeStampFireballCast = Time.time;
+            animator.SetBool("Fireball", true);
 
-            var fireball = Instantiate(Fireball, SpellSpawn.position, Quaternion.identity);
-            target.y = SpellSpawn.position.y;
-            fireball.Target = target;
+            fireballTarget = target;
         }
     }
 
@@ -101,14 +158,28 @@ public class Player : MonoBehaviour
         {
             TeleportChargesLeft--;
             timeStampTeleportCast = Time.time;
+            teleportTarget = tempTarget;
 
-            transform.position = tempTarget;
+            animator.SetBool("Teleport", true);
         }
+    }
+
+    internal void TakeDamage(float damage)
+    {
+        Health -= damage;
+        animator.SetBool("Hit", true);
+        hitTimestamp = Time.time;
     }
 
     public void SetMoveTarget(Vector3 newTarget)
     {
         target = newTarget;
+    }
+
+    public void ActivateBurningVision()
+    {
+        LeftEyeBurningVision.gameObject.SetActive(true);
+        RightEyeBurningVision.gameObject.SetActive(true);
     }
 
     public void CastBurningVision()
@@ -117,40 +188,45 @@ public class Player : MonoBehaviour
         {
             timeStampBurningVisionCast = Time.time;
             BurningVisionChargesLeft--;
+            shouldBurningVisionBeActive = true;
 
-            LeftEyeBurningVision.gameObject.SetActive(true);
-            RightEyeBurningVision.gameObject.SetActive(true);
+            animator.SetBool("BurningVision", true);
         }
     }
 
     public void CancelBurningVision()
     {
+        animator.SetBool("BurningVision", false);
         LeftEyeBurningVision.gameObject.SetActive(false);
         RightEyeBurningVision.gameObject.SetActive(false);
+        shouldBurningVisionBeActive = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Recharge") && other != null)
         {
-            var rand = UnityEngine.Random.Range(0, 4);
-            switch (rand)
+            if (!other.GetComponent<Recharge>().IsUsed)
             {
-                case 0:
-                    FireballChargesLeft += 4;
-                    break;
-                case 1:
-                    BurningVisionChargesLeft += 1;
-                    break;
-                case 2:
-                    TeleportChargesLeft += 1;
-                    break;
-                case 3:
-                    RingOfFireChargesLeft += 1;
-                    break;
+                var rand = UnityEngine.Random.Range(0, 4);
+                switch (rand)
+                {
+                    case 0:
+                        FireballChargesLeft += 4;
+                        break;
+                    case 1:
+                        BurningVisionChargesLeft += 1;
+                        break;
+                    case 2:
+                        TeleportChargesLeft += 1;
+                        break;
+                    case 3:
+                        RingOfFireChargesLeft += 1;
+                        break;
+                }
+                other.GetComponent<Recharge>().IsUsed = true;
+                Destroy(other.gameObject);
             }
-
-            Destroy(other.gameObject);
         }
     }
 }
