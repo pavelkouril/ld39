@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
     public AudioClip FireballSound;
     public AudioClip RingOfFireSound;
     public AudioClip PickupRechargeSound;
+    private bool vignette;
 
     private void Awake()
     {
@@ -89,6 +90,20 @@ public class Player : MonoBehaviour
             else
             {
                 animator.SetBool("Die", true);
+            }
+
+            if (!vignette)
+            {
+                vignette = true;
+                var vig = ScriptableObject.CreateInstance<Vignette>();
+                vig.enabled.Override(true);
+                vig.intensity.Override(1);
+
+                var volume = PostProcessManager.instance.QuickVolume(12, 110f, vig);
+                volume.weight = 0f;
+
+                DOTween.Sequence()
+                    .Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0.6f, 5f));
             }
         }
 
@@ -201,7 +216,7 @@ public class Player : MonoBehaviour
 
         var chromatic = ScriptableObject.CreateInstance<ChromaticAberration>();
         chromatic.enabled.Override(true);
-        chromatic.intensity.Override(0.25f);
+        chromatic.intensity.Override(1);
 
         var volume = PostProcessManager.instance.QuickVolume(12, 100f, chromatic);
         volume.weight = 0f;
