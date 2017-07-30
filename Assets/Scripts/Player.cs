@@ -65,6 +65,13 @@ public class Player : MonoBehaviour
 
     public PlayerControls playerControls { get; private set; }
 
+    public AudioClip HitSound;
+    public AudioClip TeleportSound;
+    public AudioClip BurningVisionSound;
+    public AudioClip FireballSound;
+    public AudioClip RingOfFireSound;
+    public AudioClip PickupRechargeSound;
+
     private void Awake()
     {
         playerControls = GetComponent<PlayerControls>();
@@ -115,6 +122,8 @@ public class Player : MonoBehaviour
             var fireball = Instantiate(Fireball, SpellSpawn.position, Quaternion.identity);
             fireball.Target = (Vector3)fireballTarget;
             fireballTarget = null;
+            GetComponent<AudioSource>().clip = FireballSound;
+            GetComponent<AudioSource>().Play();
         }
 
         if (timeStampFireballCast + FireballCooldown <= Time.time)
@@ -134,6 +143,8 @@ public class Player : MonoBehaviour
             Instantiate(RingOfFire, transform.position, Quaternion.identity);
             shouldCastRingOfFire = false;
             animator.SetBool("RingOfFire", false);
+            GetComponent<AudioSource>().clip = RingOfFireSound;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -176,6 +187,9 @@ public class Player : MonoBehaviour
             TeleportParticles.Play();
 
             animator.SetBool("Teleport", true);
+
+            GetComponent<AudioSource>().clip = TeleportSound;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -201,6 +215,8 @@ public class Player : MonoBehaviour
                 RuntimeUtilities.DestroyVolume(volume, true);
                 Destroy(this);
             });
+        GetComponent<AudioSource>().clip = HitSound;
+        GetComponent<AudioSource>().Play();
     }
 
     public void SetMoveTarget(Vector3 newTarget)
@@ -212,6 +228,8 @@ public class Player : MonoBehaviour
     {
         LeftEyeBurningVision.gameObject.SetActive(true);
         RightEyeBurningVision.gameObject.SetActive(true);
+        GetComponent<AudioSource>().clip = BurningVisionSound;
+        GetComponent<AudioSource>().Play();
     }
 
     public void CastBurningVision()
@@ -260,12 +278,18 @@ public class Player : MonoBehaviour
                 other.GetComponent<Recharge>().IsUsed = true;
                 Destroy(other.gameObject);
             }
+
+            GetComponent<AudioSource>().clip = PickupRechargeSound;
+            GetComponent<AudioSource>().Play();
         }
 
         if (other.CompareTag("RechargeTutorial") && other != null)
         {
             Destroy(other.gameObject);
             tutManager.StartGame();
+
+            GetComponent<AudioSource>().clip = PickupRechargeSound;
+            GetComponent<AudioSource>().Play();
         }
     }
 }
